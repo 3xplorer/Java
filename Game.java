@@ -94,10 +94,14 @@ public class Game {
 		return currentTrainer;
 	}
 
-	public void setCurrentTrainer(Trainer trainer) {
-		if (currentTrainer == null || !currentTrainer.equals(trainer)) {
-			currentTrainer = trainer;
+	public void setCurrentTrainer(Trainer newTrainer) {
+		Trainer oldValue = this.getCurrentTrainer();
+		if (currentTrainer == null || !currentTrainer.equals(newTrainer)) {
+			currentTrainer = newTrainer;
 			currentTrainer.setCurrentGame(this);
+			if (oldValue != null) {
+				oldValue.setCurrentGame(null);
+			}
 		}
 	}
 

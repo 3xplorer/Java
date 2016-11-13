@@ -33,12 +33,7 @@ public class Ground {
 
 	public void setGame(Game game) {
 		Game oldValue = this.game;
-		
-//		if (this.game == null || !this.game.equals(game)) {
-//			this.game = game;
-//			game.addGround(this);
-//		}
-		
+
 		if (this.game == null || !this.game.equals(game)) {
 			this.game = game;
 		}
@@ -57,17 +52,22 @@ public class Ground {
 	}
 
 	public void addTrainer(Trainer trainer) {
+		Ground oldValue = trainer.getGround();
+
 		if (trainerList == null) {
 			trainerList = new LinkedHashSet<>();
 		}
 		if (!trainerList.contains(trainer)) {
 			trainerList.add(trainer);
+			if (oldValue != null) {
+				oldValue.removeTrainer(trainer);
+			}
 			trainer.setGround(this);
 		}
 	}
 
 	public void removeTrainer(Trainer trainer) {
-		if (trainerList != null) {
+		if (trainerList != null && trainerList.contains(trainer)) {
 			trainerList.remove(trainer);
 		}
 	}

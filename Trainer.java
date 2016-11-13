@@ -78,9 +78,10 @@ public class Trainer {
 	}
 
 	public void setCurrentGame(Game game) {
-		if (currentGame == null || !currentGame.equals(game)) {
+		if (currentGame == null) {
 			currentGame = game;
-			game.setCurrentTrainer(this);
+		} else {
+			currentGame = null;
 		}
 	}
 
