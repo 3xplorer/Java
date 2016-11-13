@@ -96,4 +96,27 @@ public class TestModel {
 		assertNull(trainer1.getCurrentGame());
 		assertEquals(trainer2.getCurrentGame(), game);
 	}
+	
+	@Test
+	public void testNeighbor() throws Exception {
+		
+		Ground ground = new Ground();
+		Ground left = new Ground();
+		Ground right = new Ground();
+		Ground top = new Ground();
+		Ground bot = new Ground();
+		
+		ground.withNeighbor(left, right, top, bot);
+		
+		assertNotNull(ground.getNeighbors());
+		assertTrue(ground.getNeighbors().contains(bot));
+		assertTrue(left.getNeighbors().contains(ground));
+		assertEquals(ground.getNeighbors().size(), 4);
+		
+		ground.removeNeighbor(top);
+		
+		assertFalse(top.getNeighbors().contains(ground));
+		assertFalse(ground.getNeighbors().contains(top));
+		assertEquals(ground.getNeighbors().size(), 3);
+	}
 }
