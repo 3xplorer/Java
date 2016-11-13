@@ -10,6 +10,7 @@ public class Ground {
 	private LinkedHashSet<Trainer> trainerList;
 	private LinkedHashSet<Ground> floor_higher;
 	private LinkedHashSet<Ground> floor_lower;
+	private LinkedHashSet<Ground> neighbors;
 
 	public int getX() {
 		return x;
@@ -51,18 +52,18 @@ public class Ground {
 		return this;
 	}
 
-	public void addTrainer(Trainer trainer) {
-		Ground oldValue = trainer.getGround();
+	public void addTrainer(Trainer newTrainer) {
+		Ground oldValue = newTrainer.getGround();
 
 		if (trainerList == null) {
 			trainerList = new LinkedHashSet<>();
 		}
-		if (!trainerList.contains(trainer)) {
-			trainerList.add(trainer);
+		if (!trainerList.contains(newTrainer)) {
+			trainerList.add(newTrainer);
 			if (oldValue != null) {
-				oldValue.removeTrainer(trainer);
+				oldValue.removeTrainer(newTrainer);
 			}
-			trainer.setGround(this);
+			newTrainer.setGround(this);
 		}
 	}
 
@@ -132,6 +133,34 @@ public class Ground {
 
 	public Ground withFloorLower(Ground ground) {
 		addFloorLower(ground);
+		return this;
+	}
+
+	public void addNeighbor(Ground ground) {
+		if (neighbors == null) {
+			neighbors = new LinkedHashSet<>();
+		}
+		if (!neighbors.contains(ground)) {
+			neighbors.add(ground);
+			ground.addNeighbor(this);
+		}
+	}
+
+	public LinkedHashSet<Ground> getNeighbors() {
+		return neighbors;
+	}
+
+	public void removeNeighbor(Ground ground) {
+		if (neighbors.contains(ground)) {
+			neighbors.remove(ground);
+			ground.removeNeighbor(this);
+		}
+	}
+
+	public Ground withNeighbor(Ground... grounds) {
+		for (Ground ground : grounds) {
+			this.addNeighbor(ground);
+		}
 		return this;
 	}
 }
